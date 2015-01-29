@@ -1,0 +1,12 @@
+{
+   "name" : "cloudexam\\exam",
+   "require" : {
+        "php" : "~5.6",
+        "silex/silex" : "~1.2",
+        "doctrine/orm" : "2.4.6"
+    },
+   "require-dev" : {
+        "phpunit/phpunit" : "4.4.5"
+   }
+
+}
