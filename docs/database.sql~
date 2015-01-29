@@ -1,0 +1,119 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+
+-- -----------------------------------------------------
+-- Table `exam`.`Exam`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `exam`.`Exam` ;
+
+CREATE TABLE IF NOT EXISTS `exam`.`Exam` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  `slug` VARCHAR(255) NOT NULL,
+  `description` TEXT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `slug_UNIQUE` (`slug` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `exam`.`Choice`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `exam`.`Choice` ;
+
+CREATE TABLE IF NOT EXISTS `exam`.`Choice` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `idQuestion` INT NOT NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_Option_1_idx` (`idQuestion` ASC),
+  CONSTRAINT `fk_Option_1`
+    FOREIGN KEY (`idQuestion`)
+    REFERENCES `exam`.`Question` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `exam`.`Question`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `exam`.`Question` ;
+
+CREATE TABLE IF NOT EXISTS `exam`.`Question` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `idExam` INT NOT NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `idCorrectChoice` INT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_Question_1_idx` (`idExam` ASC),
+  INDEX `fk_Question_2_idx` (`idCorrectChoice` ASC),
+  CONSTRAINT `fk_Question_1`
+    FOREIGN KEY (`idExam`)
+    REFERENCES `exam`.`Exam` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Question_2`
+    FOREIGN KEY (`idCorrectChoice`)
+    REFERENCES `exam`.`Choice` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `exam`.`Apply`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `exam`.`Apply` ;
+
+CREATE TABLE IF NOT EXISTS `exam`.`Apply` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `idExam` INT NOT NULL,
+  `user` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_Apply_1_idx` (`idExam` ASC),
+  CONSTRAINT `fk_Apply_1`
+    FOREIGN KEY (`idExam`)
+    REFERENCES `exam`.`Exam` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `exam`.`Try`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `exam`.`Try` ;
+
+CREATE TABLE IF NOT EXISTS `exam`.`Try` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `idApply` INT NOT NULL,
+  `idChoice` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_Try_1_idx` (`idApply` ASC),
+  INDEX `fk_Try_2_idx` (`idChoice` ASC),
+  CONSTRAINT `fk_Try_1`
+    FOREIGN KEY (`idApply`)
+    REFERENCES `exam`.`Apply` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Try_2`
+    FOREIGN KEY (`idChoice`)
+    REFERENCES `exam`.`Choice` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
