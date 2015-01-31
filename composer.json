@@ -1,5 +1,10 @@
 {
    "name" : "cloudexam\\exam",
+   "autoload" : {
+       "psr-4" : {
+           "CloudExam\\Exam\\" : "src/"
+       }
+   },
    "require" : {
         "php" : "~5.6",
         "silex/silex" : "~1.2",
