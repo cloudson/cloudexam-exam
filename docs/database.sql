@@ -29,14 +29,14 @@ DROP TABLE IF EXISTS `exam`.`Choice` ;
 
 CREATE TABLE IF NOT EXISTS `exam`.`Choice` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `idQuestion` INT NOT NULL,
+  `question_id` INT NOT NULL,
   `title` VARCHAR(255) NOT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Option_1_idx` (`idQuestion` ASC),
+  INDEX `fk_Option_1_idx` (`question_id` ASC),
   CONSTRAINT `fk_Option_1`
-    FOREIGN KEY (`idQuestion`)
+    FOREIGN KEY (`question_id`)
     REFERENCES `exam`.`Question` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -50,21 +50,21 @@ DROP TABLE IF EXISTS `exam`.`Question` ;
 
 CREATE TABLE IF NOT EXISTS `exam`.`Question` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `idExam` INT NOT NULL,
+  `exam_id` INT NOT NULL,
   `title` VARCHAR(255) NOT NULL,
-  `idCorrectChoice` INT NULL,
+  `choice_id` INT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Question_1_idx` (`idExam` ASC),
-  INDEX `fk_Question_2_idx` (`idCorrectChoice` ASC),
+  INDEX `fk_Question_1_idx` (`exam_id` ASC),
+  INDEX `fk_Question_2_idx` (`choice_id` ASC),
   CONSTRAINT `fk_Question_1`
-    FOREIGN KEY (`idExam`)
+    FOREIGN KEY (`exam_id`)
     REFERENCES `exam`.`Exam` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Question_2`
-    FOREIGN KEY (`idCorrectChoice`)
+    FOREIGN KEY (`choice_id`)
     REFERENCES `exam`.`Choice` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -78,12 +78,12 @@ DROP TABLE IF EXISTS `exam`.`Apply` ;
 
 CREATE TABLE IF NOT EXISTS `exam`.`Apply` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `idExam` INT NOT NULL,
+  `exam_id` INT NOT NULL,
   `user` VARCHAR(45) NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Apply_1_idx` (`idExam` ASC),
+  INDEX `fk_Apply_1_idx` (`exam_id` ASC),
   CONSTRAINT `fk_Apply_1`
-    FOREIGN KEY (`idExam`)
+    FOREIGN KEY (`exam_id`)
     REFERENCES `exam`.`Exam` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -97,18 +97,18 @@ DROP TABLE IF EXISTS `exam`.`Try` ;
 
 CREATE TABLE IF NOT EXISTS `exam`.`Try` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `idApply` INT NOT NULL,
-  `idChoice` INT NOT NULL,
+  `apply_id` INT NOT NULL,
+  `choice_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Try_1_idx` (`idApply` ASC),
-  INDEX `fk_Try_2_idx` (`idChoice` ASC),
+  INDEX `fk_Try_1_idx` (`apply_id` ASC),
+  INDEX `fk_Try_2_idx` (`choice_id` ASC),
   CONSTRAINT `fk_Try_1`
-    FOREIGN KEY (`idApply`)
+    FOREIGN KEY (`apply_id`)
     REFERENCES `exam`.`Apply` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Try_2`
-    FOREIGN KEY (`idChoice`)
+    FOREIGN KEY (`choice_id`)
     REFERENCES `exam`.`Choice` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
