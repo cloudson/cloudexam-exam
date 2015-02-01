@@ -18,6 +18,9 @@ class Exam
    public function get($slug)
    {
        $entity =  $this->examRepo->findBySlug($slug); 
+       if (is_null($entity)) {
+           return null;
+       } 
 
        return $this->asTransfer($entity); 
    }

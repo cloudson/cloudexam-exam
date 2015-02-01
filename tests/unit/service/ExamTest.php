@@ -36,4 +36,16 @@ class ExamTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $exam);
     }
+
+    /**
+     * @test 
+     */ 
+    public function shouldReturnsNullIfExamIsNotFound()
+    {
+        $slug = 'Wally';
+        $this->repo->expects($this->once())->method('findBySlug')->with($slug)->will($this->returnValue(null)); 
+        $exam = $this->service->get($slug);
+
+        $this->assertNull($exam);
+    }
 }
