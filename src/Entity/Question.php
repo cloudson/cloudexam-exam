@@ -19,7 +19,7 @@ class Question
 
                 public function setName($name)
                         {
-                                    $this->name = $namea;
+                                    $this->name = $name;
                                         }
 
                 public function getName()
