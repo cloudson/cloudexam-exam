@@ -51,4 +51,16 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $questions);
     }
+    
+    /**
+     * @test
+     */
+    public function shouldReturnAnEmptyArrayWhenQuestionsIsNotFound()
+    {
+        $questionId = 666;
+        $this->repository->expects($this->once())->method('findByQuestion')->with($questionId)->will($this->returnValue(null)); 
+        $questions = $this->service->getByQuestion($questionId);
+
+        $this->assertInternalType('array', $questions);
+    }
 }

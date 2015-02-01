@@ -19,7 +19,7 @@ class Question
     {
         $questions = $this->repository->findByQuestion($questionId); 
         if (is_null($questions)) {
-            return null;
+            $questions = []; 
         }
         return $this->asTransfer($questions);
     }
