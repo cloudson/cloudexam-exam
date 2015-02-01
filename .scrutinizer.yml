@@ -1,0 +1,8 @@
+language: php
+filter:
+    exclude_paths: 
+        - tests/* 
+        - vendor/* 
+        - docs/*
+        - config/* 
+        
