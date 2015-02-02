@@ -6,10 +6,10 @@ use Doctrine\ORM\EntityRepository;
 
 class Question extends EntityRepository
 {
-    public function findByQuestion($questionId)
+    public function findByExam($questionId)
     {
         return $this->getEntityManager()->findAll([
-            'question_id' => $questionId
+            'exam_id' => $questionId
         ]);
     }   
 }

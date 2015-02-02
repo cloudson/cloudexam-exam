@@ -8,12 +8,14 @@ use CloudExam\Exam\Transfer\Question as QuestionTransfer;
 class QuestionTest extends \PHPUnit_Framework_TestCase
 {
     protected $service; 
-    protected $repository; 
+    protected $repositoryMock; 
+    protected $choiceServiceMock; 
 
     public function setUp()
     {
-        $this->repository = $this->getMockBuilder('CloudExam\Exam\Repository\Question')->disableOriginalConstructor()->getMock();
-        $this->service = new Question($this->repository); 
+        $this->repositoryMock = $this->getMockBuilder('CloudExam\Exam\Repository\Question')->disableOriginalConstructor()->getMock();
+        $this->choiceServiceMock = $this->getMockBuilder('CloudExam\Exam\Service\Choice')->disableOriginalConstructor()->getMock(); 
+        $this->service = new Question($this->repositoryMock); 
     }
 
     /**
@@ -21,7 +23,7 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
      */ 
     public function shouldReturnsQuestionsByExam()
     {
-        $questionId = 66;  
+        $examId = 66;  
         $transfer1 = new QuestionTransfer; 
         $transfer1->setId(1); 
         $transfer1->setName('Question one');
@@ -42,12 +44,12 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
         $q2->setId(2);
         $q2->setName('Question two');
 
-        $this->repository->expects($this->once())->method('findByQuestion')->with($questionId)->will($this->returnValue([
+        $this->repositoryMock->expects($this->once())->method('findByExam')->with($examId)->will($this->returnValue([
            $q1,
            $q2
        ])); 
 
-        $questions = $this->service->getByQuestion($questionId);
+        $questions = $this->service->getByExam($examId);
 
         $this->assertEquals($expected, $questions);
     }
@@ -57,10 +59,31 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldReturnAnEmptyArrayWhenQuestionsIsNotFound()
     {
-        $questionId = 666;
-        $this->repository->expects($this->once())->method('findByQuestion')->with($questionId)->will($this->returnValue(null)); 
-        $questions = $this->service->getByQuestion($questionId);
+        $examId = 666;
+        $this->repositoryMock->expects($this->once())->method('findByExam')->with($examId)->will($this->returnValue(null)); 
+        $questions = $this->service->getByExam($examId);
 
         $this->assertInternalType('array', $questions);
+    }
+
+    /*
+     * @test
+     */ 
+    public function shouldReturnsAQuestion() 
+    {
+        $examId = 66;  
+        $transfer1 = new QuestionTransfer; 
+        $transfer1->setId(1); 
+        $transfer1->setName('Question one');
+
+        $q1 = new QuestionEntity; 
+        $q1->setId(1);
+        $q1->setName('Question one');
+
+        $this->repositoryMock->expects($this->once())->method('findOneById')->with($examId)->will($this->returnValue($q1)); 
+
+        $question = $this->service->get($examId); 
+
+        $this->assertEquals($transfer, $question);
     }
 }

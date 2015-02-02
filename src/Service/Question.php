@@ -15,15 +15,17 @@ class Question
         $this->repository = $repo; 
     }
 
-    public function getByQuestion($questionId)
+    public function getByExam($examId)
     {
-        $questions = $this->repository->findByQuestion($questionId); 
+        $questions = $this->repository->findByExam($examId); 
         if (is_null($questions)) {
             $questions = []; 
         }
         return $this->asTransfer($questions);
     }
-    
+
+ //   public function get($)
+
     protected function asTransfer($questions)
     {
         $transfers = [];
