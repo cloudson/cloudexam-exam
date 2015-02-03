@@ -44,7 +44,7 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
         $q2->setId(2);
         $q2->setName('Question two');
 
-        $this->repositoryMock->expects($this->once())->method('findByExam')->with($examId)->will($this->returnValue([
+        $this->repositoryMock->expects($this->once())->method('__call')->with('findByExam', [$examId])->will($this->returnValue([
            $q1,
            $q2
        ])); 
@@ -60,7 +60,7 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
     public function shouldReturnAnEmptyArrayWhenQuestionsIsNotFound()
     {
         $examId = 666;
-        $this->repositoryMock->expects($this->once())->method('findByExam')->with($examId)->will($this->returnValue(null)); 
+        $this->repositoryMock->expects($this->once())->method('__call')->with('findByExam', [$examId] )->will($this->returnValue(null)); 
         $questions = $this->service->getByExam($examId);
 
         $this->assertInternalType('array', $questions);
