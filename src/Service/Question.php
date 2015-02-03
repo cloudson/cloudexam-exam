@@ -21,23 +21,31 @@ class Question
         if (is_null($questions)) {
             $questions = []; 
         }
-        return $this->asTransfer($questions);
-    }
-
- //   public function get($)
-
-    protected function asTransfer($questions)
-    {
         $transfers = [];
         foreach ($questions as $question) {
-            $transfer = new QuestionTransfer;
-            $transfer->setId($question->getId());
-            $transfer->setName($question->getName());
-
-            $transfers[] = $transfer;
+            $transfers[] = $this->asTransfer($question);
         }
 
         return $transfers;
+    }
+
+    public function get($questionId) 
+    {
+        $question = $this->repository->findOneById($questionId);
+        if (is_null($question)) {
+            return null;
+        }
+
+        return $this->asTransfer($question);
+    }
+
+    protected function asTransfer($question)
+    {
+        $transfer = new QuestionTransfer;
+        $transfer->setId($question->getId());
+        $transfer->setName($question->getName());
+    
+        return $transfer;     
     }
 
 }

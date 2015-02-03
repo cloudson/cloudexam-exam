@@ -66,12 +66,12 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('array', $questions);
     }
 
-    /*
+    /**
      * @test
      */ 
     public function shouldReturnsAQuestion() 
     {
-        $examId = 66;  
+        $questionId = 66;  
         $transfer1 = new QuestionTransfer; 
         $transfer1->setId(1); 
         $transfer1->setName('Question one');
@@ -80,10 +80,10 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
         $q1->setId(1);
         $q1->setName('Question one');
 
-        $this->repositoryMock->expects($this->once())->method('findOneById')->with($examId)->will($this->returnValue($q1)); 
+        $this->repositoryMock->expects($this->once())->method('__call')->with('findOneById', [$questionId])->will($this->returnValue($q1)); 
 
-        $question = $this->service->get($examId); 
+        $question = $this->service->get($questionId); 
 
-        $this->assertEquals($transfer, $question);
+        $this->assertEquals($transfer1, $question);
     }
 }
