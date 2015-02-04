@@ -94,14 +94,14 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldGetQuestionWithEmbededChoices()
     {
-        $op1 = new ChoiceTransfer; 
-        $op1->setName('Option 1');
-        $op2 = new ChoiceTransfer; 
-        $op2->setName('Option 2');
-        $op3 = new ChoiceTransfer; 
-        $op3->setName('Option 3');
-        $op4 = new ChoiceTransfer; 
-        $op4->setName('Option 4');
+        $c1 = new ChoiceTransfer; 
+        $c1->setName('Option 1');
+        $c2 = new ChoiceTransfer; 
+        $c2->setName('Option 2');
+        $c3 = new ChoiceTransfer; 
+        $c3->setName('Option 3');
+        $c4 = new ChoiceTransfer; 
+        $c4->setName('Option 4');
 
         $q1 = new QuestionEntity; 
         $q1->setId(1);
@@ -112,17 +112,17 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
         $transfer1->setId(1); 
         $transfer1->setName('Question one');
         $transfer1->setChoices([
-            $q1, $q2, $q3, $q4 
+            $c1, $c2, $c3, $c4 
         ]); 
 
         $this->repositoryMock->expects($this->once())->method('__call')->with('findOneById', [$questionId])->will($this->returnValue($q1)); 
         $this->choiceServiceMock->expects($this->once())->method('getChoicesByQuestion')->with($questionId)->will($this->returnValue([
-            $q1, $q2, $q3, $q4
+            $c1, $c2, $c3, $c4
         ]));
             
         $question = $this->service->get($questionId); 
 
-        $this->assertEquals($transfer1->getChoices(), [$q1, $q2, $q3, $q4]);
+        $this->assertEquals($transfer1->getChoices(), [$c1, $c2, $c3, $c4]);
 
     }
 }
