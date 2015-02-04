@@ -6,6 +6,7 @@ class Question
 {
     protected $id; 
     protected $name; 
+    protected $choices = array();
 
     public function setId($id)
     {
@@ -25,5 +26,15 @@ class Question
     public function getName()
     {
         return $this->name;
+    }
+
+    public function setChoices(Array $choices)
+    {
+        $this->choices = $choices;
+    }
+
+    public function getChoices()
+    {
+        return $this->choices;
     }
 }
