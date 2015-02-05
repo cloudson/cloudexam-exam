@@ -1,8 +1,10 @@
-language: php
-filter:
-    exclude_paths: 
-        - tests/* 
-        - vendor/* 
-        - docs/*
-        - config/* 
-        
+build:  
+    environment:
+        php:
+            version: 5.5.12
+    tests:
+        override:
+            - 
+                command:  phpunit --coverage-clover=coverage
+                    file: coverage
+                    format: php-clover
