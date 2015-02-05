@@ -5,7 +5,7 @@ build:
     tests:
         override:
             - 
-                command:  phpunit --coverage-clover=coverage tests
+                command:  cd tests && phpunit --coverage-clover=coverage unit
                 coverage:
                     file: coverage
                     format: php-clover
