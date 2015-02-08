@@ -1,11 +1,6 @@
-build:  
-    environment:
-        php:
-            version: 5.5.12
-    tests:
-        override:
-            - 
-                command:  cd tests && phpunit --coverage-clover=coverage unit
-                coverage:
-                    file: coverage
-                    format: php-clover
+checks:
+    php:
+        code_rating: true
+    tools:
+        external_code_coverage: 
+            timeout: 3600
