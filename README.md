@@ -1,4 +1,4 @@
-CloudExam - Exam 
+CloudExam\Exam 
 =====
 
 [![Build Status](https://travis-ci.org/cloudson/cloudexam-exam.svg)](https://travis-ci.org/cloudson/cloudexam-exam)
