@@ -2,9 +2,21 @@
 
 namespace CloudExam\Exam\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+* @ORM\Entity(repositoryClass="\CloudExam\Exam\Repository\Question")
+* @ORM\Table(name="Question")   
+* 
+ **/
 class Question
 {
-        protected $id;
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column 
+     */
+    protected $id;
             protected $name;
 
             public function setId($id)

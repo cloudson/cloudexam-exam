@@ -4,6 +4,6 @@ namespace CloudExam\Exam\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class Question extends EntityRepository
+class Choice extends EntityRepository
 {
 }
