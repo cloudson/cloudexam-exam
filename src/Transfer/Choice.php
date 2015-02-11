@@ -4,10 +4,10 @@ namespace CloudExam\Exam\Transfer;
 
 class Choice 
 {
-   protected $name; 
+   protected $title; 
 
-   public function setName($name)
+   public function setTitle($title)
    {
-        $this->name = $name; 
+        $this->title = $title; 
    }
 }

@@ -4,9 +4,9 @@ namespace CloudExam\Exam\Transfer;
 
 class Question
 {
-    protected $id; 
-    protected $name; 
-    protected $choices = array();
+    public $id; 
+    public $title; 
+    public $choices = array();
 
     public function setId($id)
     {
@@ -18,14 +18,14 @@ class Question
         return $this->id;
     }
 
-    public function setName($name)
+    public function setTitle($title)
     {
-        $this->name = $name;
+        $this->title = $title;
     }
 
-    public function getName()
+    public function getTitle()
     {
-        return $this->name;
+        return $this->title;
     }
 
     public function setChoices(Array $choices)

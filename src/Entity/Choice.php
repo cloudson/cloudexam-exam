@@ -16,10 +16,23 @@ class Choice
      * @ORM\Id @ORM\Column @ORM\GeneratedValue
      */
     private $id;
+
+    /**
+    * @ORM\Column(type="integer")
+    */ 
     private $questionId; 
+    /**
+     * @ORM\Column(type="string", length=225)
+     */
     private $title; 
+    /**
+     * @ORM\Column(type="datetime")
+     */
     private $createdAt; 
-    private $updateAt;    
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;    
 
     public function getId()
     {

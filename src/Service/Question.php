@@ -34,6 +34,7 @@ class Question
     public function get($questionId) 
     {
         $question = $this->repository->findOneById($questionId);
+
         if (is_null($question)) {
             return null;
         }
@@ -48,7 +49,7 @@ class Question
     {
         $transfer = new QuestionTransfer;
         $transfer->setId($question->getId());
-        $transfer->setName($question->getName());
+        $transfer->setTitle($question->getTitle());
     
         return $transfer;     
     }

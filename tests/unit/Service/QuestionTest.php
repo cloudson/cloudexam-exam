@@ -27,11 +27,11 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
         $examId = 66;  
         $transfer1 = new QuestionTransfer; 
         $transfer1->setId(1); 
-        $transfer1->setName('Question one');
+        $transfer1->setTitle('Question one');
 
         $transfer2 = new QuestionTransfer; 
         $transfer2->setId(2); 
-        $transfer2->setName('Question two');
+        $transfer2->setTitle('Question two');
  
         $expected = [
             $transfer1,
@@ -39,11 +39,11 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
         ]; 
         $q1 = new QuestionEntity; 
         $q1->setId(1);
-        $q1->setName('Question one');
+        $q1->setTitle('Question one');
 
         $q2 = new QuestionEntity; 
         $q2->setId(2);
-        $q2->setName('Question two');
+        $q2->setTitle('Question two');
 
         $this->repositoryMock->expects($this->once())->method('__call')->with('findByExam', [$examId])->will($this->returnValue([
            $q1,
@@ -75,11 +75,11 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
         $questionId = 66;  
         $transfer1 = new QuestionTransfer; 
         $transfer1->setId(1); 
-        $transfer1->setName('Question one');
+        $transfer1->setTitle('Question one');
 
         $q1 = new QuestionEntity; 
         $q1->setId(1);
-        $q1->setName('Question one');
+        $q1->setTitle('Question one');
 
         $this->repositoryMock->expects($this->once())->method('__call')->with('findOneById', [$questionId])->will($this->returnValue($q1)); 
         $this->choiceServiceMock->expects($this->once())->method('getChoicesByQuestion')->with($questionId)->will($this->returnValue([])); 
@@ -95,22 +95,22 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
     public function shouldGetQuestionWithEmbededChoices()
     {
         $c1 = new ChoiceTransfer; 
-        $c1->setName('Option 1');
+        $c1->setTitle('Option 1');
         $c2 = new ChoiceTransfer; 
-        $c2->setName('Option 2');
+        $c2->setTitle('Option 2');
         $c3 = new ChoiceTransfer; 
-        $c3->setName('Option 3');
+        $c3->setTitle('Option 3');
         $c4 = new ChoiceTransfer; 
-        $c4->setName('Option 4');
+        $c4->setTitle('Option 4');
 
         $q1 = new QuestionEntity; 
         $q1->setId(1);
-        $q1->setName('Question one');
+        $q1->setTitle('Question one');
  
         $questionId = 66;  
         $transfer1 = new QuestionTransfer; 
         $transfer1->setId(1); 
-        $transfer1->setName('Question one');
+        $transfer1->setTitle('Question one');
         $transfer1->setChoices([
             $c1, $c2, $c3, $c4 
         ]); 
