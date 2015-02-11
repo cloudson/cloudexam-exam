@@ -21,6 +21,7 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), [
 
 $paths = [ __DIR__ . "/../src/Entity"  ];
 $config = Setup::createConfiguration(!ENV_PROD);
+$config->setNamingStrategy(new  \Doctrine\ORM\Mapping\UnderscoreNamingStrategy);
 $driver = new AnnotationDriver(new AnnotationReader(), $paths);
 
 AnnotationRegistry::registerLoader('class_exists');
