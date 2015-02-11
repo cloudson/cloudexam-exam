@@ -1,6 +1,6 @@
 checks:
     php:
         code_rating: true
-    tools:
-        external_code_coverage: 
-            timeout: 3600
+tools:
+    external_code_coverage: 
+        timeout: 3600
