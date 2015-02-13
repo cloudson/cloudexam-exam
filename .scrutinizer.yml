@@ -1,6 +1,6 @@
 imports:
-	- php
+    - php
 before_commands:
-	- "composer install"
+    - composer install
 tools:
     php_code_coverage: true
