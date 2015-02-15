@@ -15,6 +15,9 @@ class Exam
        $this->examRepo = $examRepo; 
    }
 
+   /**
+    * @method \CloudExam\Exam\Entity\Exam findBySlug
+    */ 
    public function get($slug)
    {
        $entity =  $this->examRepo->findBySlug($slug); 

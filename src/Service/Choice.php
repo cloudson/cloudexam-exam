@@ -13,6 +13,9 @@ class Choice
         $this->repository = $repo; 
     }
 
+    /**
+    * @method findByQuestionId
+    */ 
     public function getChoicesByQuestion($questionId) 
     {
         $choices = $this->repository->findByQuestionId($questionId);      

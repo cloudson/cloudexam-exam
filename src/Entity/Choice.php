@@ -54,7 +54,7 @@ class Choice
         $this->title = $title;
     }
 
-    public function getTitle($title)
+    public function getTitle()
     {
         return $this->title;
     }

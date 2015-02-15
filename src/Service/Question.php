@@ -17,6 +17,9 @@ class Question
         $this->choiceService = $choiceService; 
     }
 
+    /**
+    * @method findByExam
+    */ 
     public function getByExam($examId)
     {
         $questions = $this->repository->findByExam($examId); 
@@ -31,6 +34,9 @@ class Question
         return $transfers;
     }
 
+    /**
+    * @method findOneById
+    */ 
     public function get($questionId) 
     {
         $question = $this->repository->findOneById($questionId);
