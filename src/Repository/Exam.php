@@ -8,7 +8,7 @@ class Exam extends EntityRepository
 {
     public function findBySlug($slug)
     {
-        return $this->getEntityManager()->find([
+        return $this->getEntityManager()->findBy([
             'slug' => $slug
         ]);
     }

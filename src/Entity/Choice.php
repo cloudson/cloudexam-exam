@@ -61,7 +61,7 @@ class Choice
 
     public function setCreatedAt($created)
     {
-        $this->createAt = $created;
+        $this->createdAt = $created;
     }
 
     public function getCreatedAt()
