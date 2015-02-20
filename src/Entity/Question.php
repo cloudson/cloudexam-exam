@@ -34,6 +34,11 @@ class Question
      */
     protected $updatedAt;
 
+    /** 
+    * @ORM\Colum(type="string", length=255)
+    */ 
+    protected $slug; 
+
 
     protected $exam;
 
@@ -55,6 +60,16 @@ class Question
     public function getTitle()
     {
          return $this->title;
+    }
+
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
+    public function getSlug()
+    {
+         return $this->slug;
     }
 
     public function setExam($exam)

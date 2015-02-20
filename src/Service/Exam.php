@@ -28,6 +28,17 @@ class Exam
        return $this->asTransfer($entity); 
    }
 
+   public function getAll(Array $criteria)
+   {
+      $collection = $this->examRepo->findLast($criteria);
+      $result = [];
+      foreach ($collection as $item) {
+          $result[] = $this->asTransfer($item);
+      }
+
+      return $result;
+   }
+
    protected function asTransfer(ExamEntity $exam) 
    {
        $transfer = new ExamTransfer();

@@ -48,4 +48,36 @@ class ExamTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($exam);
     }
+
+    /**
+    * @test
+    */ 
+    public function shouldReturnsLastExams()
+    {
+        $exam1 = new ExamTransfer;
+        $exam1->setName('ZCE');
+
+        $exam2 = new ExamTransfer;
+        $exam2->setName('LC1');        
+
+        $e1 = new ExamEntity;
+        $e1->setName($exam1->getName());
+
+        $e2 = new ExamEntity;
+        $e2->setName($exam2->getName());
+
+        $expected = [
+            $exam2, $exam1
+        ];
+
+        $this->repo->expects($this->once())->method('findLast')->will($this->returnValue([
+                $e2, $e1
+        ]));
+
+        $collection = $this->service->getAll([
+            'limit' => 2
+        ]);
+
+        $this->assertEquals($expected, $collection);
+    }
 }

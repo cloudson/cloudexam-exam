@@ -12,4 +12,9 @@ class Exam extends EntityRepository
             'slug' => $slug
         ]);
     }
+
+    public function findLast(Array $criteria)
+    {
+
+    }
 }
