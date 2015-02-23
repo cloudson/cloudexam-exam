@@ -27,7 +27,22 @@ class Attempt
 		$entity = $this->asEntity($transfer);
 		
 		return $this->repo->doTry($entity);
-	}
+    }
+
+    public function check(AttemptTransfer $transfer) 
+    {
+        $entity = $this->asEntity($transfer);
+        if ($entity) {
+            $choice = $entity->getChoice(); 
+		    $question = $this->questionRepo->findOneBySlug($transfer->getQuestionSlug());
+
+            $correct = $question->getChoice();
+
+            return $correct->getTitle() == $choice->getTitle();  
+        }
+
+        return false;
+    }
 
 	private function asEntity(AttemptTransfer $transfer)
 	{

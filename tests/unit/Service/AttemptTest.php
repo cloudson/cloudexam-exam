@@ -6,6 +6,7 @@ use CloudExam\Exam\Transfer\Attempt as AttemptTransfer;
 use CloudExam\Exam\Transfer\Choice as ChoiceTransfer;
 use CloudExam\Exam\Transfer\Choice;
 use CloudExam\Exam\Entity\Question as QuestionEntity;
+use CloudExam\Exam\Entity\Choice as ChoiceEntity;
 
 class AttemptTest extends \PHPUnit_Framework_TestCase
 {
@@ -93,4 +94,33 @@ class AttemptTest extends \PHPUnit_Framework_TestCase
 		$this->service->create($transfer);
 	}
 
+    /**
+     * @test
+     */
+    public function shouldCheckStatusOfAttempt()
+    {
+		$transfer = new AttemptTransfer;
+		$transfer->setQuestionSlug('which-your-favorite-language');
+		$transfer->setChoiceTitle('PHP');
+
+        $correctChoice = new ChoiceEntity; 
+        $correctChoice->setTitle('PHP'); 
+
+        $question = new QuestionEntity;
+        $question->setSlug('which-your-favorite-language');
+        $question->setChoice($correctChoice);
+
+		$this->questionRepo->method('__call')->with(
+			'findOneBySlug',
+			[$transfer->getQuestionSlug()]
+		)->will($this->returnValue($question));
+
+		$this->choiceRepo->method('findOneBy')->with([
+				'questionId' => $question->getId(), 
+				'title' => $transfer->getChoiceTitle()
+			]
+		)->will($this->returnValue($correctChoice));
+
+        $this->assertTrue($this->service->check($transfer)); 
+    }
 }

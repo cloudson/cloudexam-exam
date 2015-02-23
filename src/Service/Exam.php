@@ -2,10 +2,10 @@
 
 namespace CloudExam\Exam\Service; 
 
-
 use CloudExam\Exam\Repository\Exam as ExamRepository;
 use CloudExam\Exam\Entity\Exam as ExamEntity;
 use CloudExam\Exam\Transfer\Exam as ExamTransfer;
+
 class Exam
 {
    protected $examRepo;
@@ -21,7 +21,7 @@ class Exam
    public function get($slug)
    {
        $entity =  $this->examRepo->findBySlug($slug); 
-       if (is_null($entity)) {
+       if ($entity === null) {
            return null;
        } 
 

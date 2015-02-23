@@ -39,8 +39,9 @@ class Question
     */ 
     protected $slug; 
 
-
     protected $exam;
+
+    protected $choice; 
 
     public function setId($id)
     {
@@ -101,6 +102,15 @@ class Question
     {
         return $this->updatedAt;
     }
+    
+    public function setChoice($choice)
+    {
+        $this->choice = $choice;
+    }
 
+    public function getchoice()
+    {
+        return $this->choice; 
+    }
 }
 
