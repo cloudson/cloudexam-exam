@@ -26,11 +26,9 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
     {
         $examId = 66;  
         $transfer1 = new QuestionTransfer; 
-        $transfer1->setId(1); 
         $transfer1->setTitle('Question one');
 
         $transfer2 = new QuestionTransfer; 
-        $transfer2->setId(2); 
         $transfer2->setTitle('Question two');
  
         $expected = [
@@ -74,7 +72,6 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
     {
         $questionId = 66;  
         $transfer1 = new QuestionTransfer; 
-        $transfer1->setId(1); 
         $transfer1->setTitle('Question one');
 
         $q1 = new QuestionEntity; 
@@ -104,12 +101,10 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
         $c4->setTitle('Option 4');
 
         $q1 = new QuestionEntity; 
-        $q1->setId(1);
         $q1->setTitle('Question one');
  
         $questionId = 66;  
         $transfer1 = new QuestionTransfer; 
-        $transfer1->setId(1); 
         $transfer1->setTitle('Question one');
         $transfer1->setChoices([
             $c1, $c2, $c3, $c4 

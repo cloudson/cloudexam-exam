@@ -54,7 +54,6 @@ class Question
     protected function asTransfer($question)
     {
         $transfer = new QuestionTransfer;
-        $transfer->setId($question->getId());
         $transfer->setTitle($question->getTitle());
     
         return $transfer;     
