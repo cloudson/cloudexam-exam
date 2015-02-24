@@ -3,6 +3,7 @@
 namespace CloudExam\Exam\Service; 
 
 use CloudExam\Exam\Repository\Choice as ChoiceRepository;
+use CloudExam\Exam\Transfer\Choice as ChoiceTransfer;
 
 class Choice
 {
