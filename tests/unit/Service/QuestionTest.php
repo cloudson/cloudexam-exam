@@ -118,6 +118,16 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
         $question = $this->service->get($questionId); 
 
         $this->assertEquals($transfer1->getChoices(), [$c1, $c2, $c3, $c4]);
+    }
 
+    /**
+     * @test
+     */ 
+    public function shouldReturnsNullIfQuestionIsNotFound()
+    {
+        $questionId = 66; 
+        $this->repositoryMock->expects($this->once())->method('__call')->with('findOneById', [$questionId])->will($this->returnValue(null)); 
+
+        $this->assertNull($this->service->get($questionId));
     }
 }
