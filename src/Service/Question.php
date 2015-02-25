@@ -44,6 +44,7 @@ class Question
             return null;
         }
         $transfer = $this->repository->asTransfer($question);
+        
         $choices = $this->choiceService->getChoicesByQuestion($questionId);
         $transfer->setChoices($choices); 
 

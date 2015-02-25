@@ -27,4 +27,17 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertInstanceOf('\CloudExam\Exam\Transfer\Question', $this->repo->asTransfer($entity));
 	}
+
+	/**
+	* @test
+	*/ 
+	public function shouldTestEntityWithSameValuesOfATransfer()
+	{
+		$entity = new QuestionEntity;
+		$entity->setTitle("Cloudson");
+
+		$transfer = $this->repo->asTransfer($entity);
+		$this->assertEquals("Cloudson", $transfer->getTitle());
+	}
+
 }

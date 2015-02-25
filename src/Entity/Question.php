@@ -35,7 +35,7 @@ class Question
     protected $updatedAt;
 
     /** 
-    * @ORM\Colum(type="string", length=255)
+    * @ORM\Column(type="string", length=255)
     */ 
     protected $slug; 
 

@@ -4,7 +4,6 @@ namespace CloudExam\Exam\Transfer;
 
 class Question
 {
-    public $id; 
     public $title; 
     public $choices = array();
 
