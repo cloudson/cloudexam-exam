@@ -22,18 +22,10 @@ class Choice
         $choices = $this->repository->findByQuestionId($questionId);      
         $transfers = []; 
         foreach ($choices as $choice) {
-            $transfers[] = $this->asTransfer($choice);
+            $transfers[] = $this->repository->asTransfer($choice);
         }   
 
         return $transfers;
-    }
-    
-    public function asTransfer($choice)
-    {
-        $transfer = new ChoiceTransfer;
-        $transfer->setTitle($choice->getTitle());
- 
-        return $transfer;
     }
 
 }

@@ -48,6 +48,13 @@ class ChoiceTest extends \PHPUnit_Framework_TestCase
         $this->repo->method('__call')->with('findByQuestionId')->will($this->returnValue([
             $e1, $e2
         ])); 
+        $this->repo->method('asTransfer')
+            ->will($this->returnCallback(function($entity) use ($e1, $t1, $t2){
+                if ($e1 === $entity) {
+                    return $t1; 
+                }
+                return $t2;
+            }));
 
         $found = $this->service->getChoicesByQuestion(3);
 
