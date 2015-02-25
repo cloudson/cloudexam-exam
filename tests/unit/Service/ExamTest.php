@@ -32,6 +32,7 @@ class ExamTest extends \PHPUnit_Framework_TestCase
 
         $slug = 'zce2011';
         $this->repo->expects($this->once())->method('__call')->with('findBySlug', [$slug])->will($this->returnValue($stub)); 
+        $this->repo->method('asTransfer')->will($this->returnValue($expected));
         $exam = $this->service->get($slug);  
 
         $this->assertEquals($expected, $exam);
@@ -44,6 +45,7 @@ class ExamTest extends \PHPUnit_Framework_TestCase
     {
         $slug = 'Wally';
         $this->repo->expects($this->once())->method('__call')->with('findBySlug', [$slug])->will($this->returnValue(null)); 
+
         $exam = $this->service->get($slug);
 
         $this->assertNull($exam);
@@ -73,6 +75,13 @@ class ExamTest extends \PHPUnit_Framework_TestCase
         $this->repo->expects($this->once())->method('findLast')->will($this->returnValue([
                 $e2, $e1
         ]));
+        $this->repo->method('asTransfer')
+            ->will($this->returnCallback(function($entity) use ($e1, $exam1, $exam2){
+                if ($e1 === $entity) {
+                    return $exam1; 
+                }
+                return $exam2;
+            }));
 
         $collection = $this->service->getAll([
             'limit' => 2

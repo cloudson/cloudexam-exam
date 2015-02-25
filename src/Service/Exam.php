@@ -25,7 +25,7 @@ class Exam
            return null;
        } 
 
-       return $this->asTransfer($entity); 
+       return $this->examRepo->asTransfer($entity); 
    }
 
    public function getAll(Array $criteria)
@@ -33,17 +33,9 @@ class Exam
       $collection = $this->examRepo->findLast($criteria);
       $result = [];
       foreach ($collection as $item) {
-          $result[] = $this->asTransfer($item);
+          $result[] = $this->examRepo->asTransfer($item);
       }
 
       return $result;
-   }
-
-   protected function asTransfer(ExamEntity $exam) 
-   {
-       $transfer = new ExamTransfer();
-       $transfer->setName($exam->getName());
-
-       return $transfer;
    }
 }
