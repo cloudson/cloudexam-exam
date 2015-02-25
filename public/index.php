@@ -25,4 +25,8 @@ $app->get('/question/{questionId}', function($questionId) use($app) {
     return json_encode($service->get($questionId));
 });
 
+$app->after(function($request, $response){
+	 $response->headers->set('Content-Type', 'Application/json');
+});
+
 $app->run();
