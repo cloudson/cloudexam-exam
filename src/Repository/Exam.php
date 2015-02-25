@@ -6,12 +6,7 @@ use Doctrine\ORM\EntityRepository;
 
 class Exam extends EntityRepository
 {
-    // public function findBySlug($slug)
-    // {
-    //     return $this->getEntityManager()->findBy([
-    //         'slug' => $slug
-    //     ]);
-    // }
+	use Hydrate;
 
     public function findLast(Array $criteria)
     {
