@@ -16,4 +16,14 @@ class Exam
     {
         return $this->name; 
     }
+
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
+    public function getSlug()
+    {
+         return $this->slug;
+    }
 }

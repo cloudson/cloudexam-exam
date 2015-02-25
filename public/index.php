@@ -3,6 +3,7 @@
 require_once __DIR__."/../vendor/autoload.php";
 require_once __DIR__."/../config/settings.php";
 
+use CloudExam\Exam\Service\Exam;
 use CloudExam\Exam\Service\Question;
 use CloudExam\Exam\Service\Choice;
 
@@ -14,6 +15,15 @@ $app->get("/", function(){
     return "Application is alive!";
 });
 
+$app->get('/exam', function() use ($app) {
+	$examRepo = $app['db.em']->getRepository('\CloudExam\Exam\Entity\Exam');
+	$service = new Exam($examRepo);
+	$exams = $service->getAll([
+		'OrderBy' => [ 'createdAt' => 'desc' ] 
+	]);
+
+	return json_encode($exams);
+});
 
 $app->get('/question/{questionId}', function($questionId) use($app) {
     $choiceRepo = $app['db.em']->getRepository('\CloudExam\Exam\Entity\Choice');
@@ -26,7 +36,7 @@ $app->get('/question/{questionId}', function($questionId) use($app) {
 });
 
 $app->after(function($request, $response){
-	 $response->headers->set('Content-Type', 'Application/json');
+	// $response->headers->set('Content-Type', 'Application/json');
 });
 
 $app->run();
