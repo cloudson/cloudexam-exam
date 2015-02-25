@@ -17,10 +17,11 @@ $app->get("/", function(){
 
 $app->get('/question/{questionId}', function($questionId) use($app) {
     $choiceRepo = $app['db.em']->getRepository('\CloudExam\Exam\Entity\Choice');
-    $questionService = new Choice($choiceRepo);
+    $choiceService = new Choice($choiceRepo);
     $questionRepo = $app['db.em']->getRepository('\CloudExam\Exam\Entity\Question');
 
-    $service = new Question($questionService, $questionRepo); 
+    $service = new Question($choiceService, $questionRepo); 
+    
     return json_encode($service->get($questionId));
 });
 

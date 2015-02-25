@@ -123,4 +123,34 @@ class AttemptTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->service->check($transfer)); 
     }
+
+    /**
+    * @test
+    */ 
+    public function shouldSaysThatAttemptIsWrong()
+    {
+    	$transfer = new AttemptTransfer;
+		$transfer->setQuestionSlug('which-your-favorite-language');
+		$transfer->setChoiceTitle('PHP');
+
+        $correctChoice = new ChoiceEntity; 
+        $correctChoice->setTitle('Go'); 
+
+        $question = new QuestionEntity;
+        $question->setSlug('which-your-favorite-language');
+        $question->setChoice($correctChoice);
+
+		$this->questionRepo->method('__call')->with(
+			'findOneBySlug',
+			[$transfer->getQuestionSlug()]
+		)->will($this->returnValue($question));
+
+		$this->choiceRepo->method('findOneBy')->with([
+				'questionId' => $question->getId(), 
+				'title' => $transfer->getChoiceTitle()
+			]
+		)->will($this->returnValue($correctChoice));
+
+        $this->assertTrue($this->service->check($transfer)); 
+    }
 }

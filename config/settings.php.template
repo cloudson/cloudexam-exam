@@ -1,5 +1,8 @@
 <?php
 
+define("ENV_PROD", true);
+
+
 define("DB_NAME", "");
 define("DB_USER", "");
 define("DB_PASSWORD", "");

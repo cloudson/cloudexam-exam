@@ -4,7 +4,6 @@ namespace CloudExam\Exam\Service;
 
 use CloudExam\Exam\Repository\Exam as ExamRepository;
 use CloudExam\Exam\Entity\Exam as ExamEntity;
-use CloudExam\Exam\Transfer\Exam as ExamTransfer;
 
 class Exam
 {
