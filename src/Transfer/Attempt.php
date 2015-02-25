@@ -4,8 +4,8 @@ namespace CloudExam\Exam\Transfer;
 
 class Attempt
 {
-	private $choiceTitle;
-	private $questionSlug;
+	public $choiceTitle;
+	public $questionSlug;
 
 	public function setChoiceTitle($title)
 	{

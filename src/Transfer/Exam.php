@@ -4,8 +4,8 @@ namespace CloudExam\Exam\Transfer;
 
 class Exam 
 {
-    protected $name; 
-    protected $slug;
+    public $name; 
+    public $slug;
 
     public function setName($name)
     {
