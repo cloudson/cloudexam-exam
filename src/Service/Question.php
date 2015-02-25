@@ -28,7 +28,7 @@ class Question
         }
         $transfers = [];
         foreach ($questions as $question) {
-            $transfers[] = $this->asTransfer($question);
+            $transfers[] = $this->repository->asTransfer($question);
         }
 
         return $transfers;
@@ -44,19 +44,10 @@ class Question
         if (is_null($question)) {
             return null;
         }
-        $transfer = $this->asTransfer($question);
+        $transfer = $this->repository->asTransfer($question);
         $choices = $this->choiceService->getChoicesByQuestion($questionId);
         $transfer->setChoices($choices); 
 
         return $transfer;
     }
-
-    protected function asTransfer($question)
-    {
-        $transfer = new QuestionTransfer;
-        $transfer->setTitle($question->getTitle());
-    
-        return $transfer;     
-    }
-
 }

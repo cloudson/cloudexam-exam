@@ -43,10 +43,17 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
         $q2->setId(2);
         $q2->setTitle('Question two');
 
+        $this->repositoryMock->method('asTransfer')
+            ->will($this->returnCallback(function($entity) use ($q2, $transfer1, $transfer2) {
+            if ($entity === $q2) {
+                return $transfer2;;
+            }  
+            return $transfer1;
+        }));
         $this->repositoryMock->expects($this->once())->method('__call')->with('findByExam', [$examId])->will($this->returnValue([
            $q1,
            $q2
-       ])); 
+        ])); 
 
         $questions = $this->service->getByExam($examId);
 
@@ -79,6 +86,7 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
         $q1->setTitle('Question one');
 
         $this->repositoryMock->expects($this->once())->method('__call')->with('findOneById', [$questionId])->will($this->returnValue($q1)); 
+        $this->repositoryMock->method('asTransfer')->will($this->returnValue($transfer1));
         $this->choiceServiceMock->expects($this->once())->method('getChoicesByQuestion')->with($questionId)->will($this->returnValue([])); 
 
         $question = $this->service->get($questionId); 
@@ -111,6 +119,7 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
         ]); 
 
         $this->repositoryMock->expects($this->once())->method('__call')->with('findOneById', [$questionId])->will($this->returnValue($q1)); 
+        $this->repositoryMock->method('asTransfer')->will($this->returnValue($transfer1));
         $this->choiceServiceMock->expects($this->once())->method('getChoicesByQuestion')->with($questionId)->will($this->returnValue([
             $c1, $c2, $c3, $c4
         ]));
