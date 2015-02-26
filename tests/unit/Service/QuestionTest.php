@@ -150,7 +150,8 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
      * @test
      */ 
     public function shouldReturnsNullIfQuestionIsNotFound()
-    {
+    {   
+        $questionId = 66;
         
         $this->repositoryMock->expects($this->once())->method('__call')->with('findOneById', [$questionId])->will($this->returnValue(null)); 
 
