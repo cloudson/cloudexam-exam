@@ -31,7 +31,7 @@ class ExamTest extends \PHPUnit_Framework_TestCase
         $stub->setName($name);
 
         $slug = 'zce2011';
-        $this->repo->expects($this->once())->method('__call')->with('findBySlug', [$slug])->will($this->returnValue($stub)); 
+        $this->repo->expects($this->once())->method('__call')->with('findOneBySlug', [$slug])->will($this->returnValue($stub)); 
         $this->repo->method('asTransfer')->will($this->returnValue($expected));
         $exam = $this->service->get($slug);  
 
@@ -44,7 +44,7 @@ class ExamTest extends \PHPUnit_Framework_TestCase
     public function shouldReturnsNullIfExamIsNotFound()
     {
         $slug = 'Wally';
-        $this->repo->expects($this->once())->method('__call')->with('findBySlug', [$slug])->will($this->returnValue(null)); 
+        $this->repo->expects($this->once())->method('__call')->with('findOneBySlug', [$slug])->will($this->returnValue(null)); 
 
         $exam = $this->service->get($slug);
 

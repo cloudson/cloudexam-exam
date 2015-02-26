@@ -12,6 +12,7 @@ $app['debug'] = !ENV_PROD;
 require_once __DIR__."/../config/database.php";
 
 $app->get("/", function(){
+	phpinfo();
     return "Application is alive!";
 });
 
@@ -25,6 +26,14 @@ $app->get('/exam', function() use ($app) {
 	return json_encode($exams);
 });
 
+$app->get('/exam/{slug}', function($slug) use ($app) {
+	$examRepo = $app['db.em']->getRepository('\CloudExam\Exam\Entity\Exam');
+	$service = new Exam($examRepo);
+	$exam = $service->get($slug);
+
+	return json_encode($exam);
+});
+
 $app->get('/question/{questionId}', function($questionId) use($app) {
     $choiceRepo = $app['db.em']->getRepository('\CloudExam\Exam\Entity\Choice');
     $choiceService = new Choice($choiceRepo);
@@ -36,7 +45,7 @@ $app->get('/question/{questionId}', function($questionId) use($app) {
 });
 
 $app->after(function($request, $response){
-	// $response->headers->set('Content-Type', 'Application/json');
+	$response->headers->set('Content-Type', 'Application/json');
 });
 
 $app->run();
