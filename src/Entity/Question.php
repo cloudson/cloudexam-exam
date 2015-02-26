@@ -39,6 +39,10 @@ class Question
     */ 
     protected $slug; 
 
+    /**
+    * @ORM\ManyToOne(targetEntity="Exam")
+    * @ORM\JoinColumn(name="exam_id", referencedColumnName="id")
+    */ 
     protected $exam;
 
     protected $choice; 

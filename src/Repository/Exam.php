@@ -21,4 +21,12 @@ class Exam extends EntityRepository
 
     	return $this->findBy($criteria, $OrderBy);	
     }
+
+    public function asTransfer($entity)
+    {
+        $transfer = Hydrate::asTransfer($entity);
+        $transfer->setQuestionsURI("/exam/".$transfer->getSlug()."/questions");
+
+        return $transfer;
+    }
 }

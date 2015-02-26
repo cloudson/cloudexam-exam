@@ -6,6 +6,8 @@ class Exam
 {
     public $name; 
     public $slug;
+    public $questionsURI;
+    protected $id;
 
     public function setName($name)
     {
@@ -26,4 +28,27 @@ class Exam
     {
          return $this->slug;
     }
+
+    public function setQuestionsURI($questionsURI)
+    {
+        $this->questionsURI = $questionsURI;
+    }
+
+    public function getQuestionsURI()
+    {
+        return $this->questionsURI;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+
+
 }
