@@ -6,7 +6,6 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 
-
 $databaseConfig = [
         'driver' => DB_DRIVER,
         'user' =>  DB_USER,

@@ -14,7 +14,7 @@ class Choice
     }
 
     /**
-    * @method findByQuestionId
+    * @method Array findByQuestionId
     */ 
     public function getChoicesByQuestion($questionId) 
     {
@@ -26,6 +26,5 @@ class Choice
 
         return $transfers;
     }
-
 }
 

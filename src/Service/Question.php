@@ -20,14 +20,15 @@ class Question
     }
 
     /**
-    * @method findByExam
+    * @method Array findByExam
+    * @method Exam findOneBySlug
     */ 
     public function getByExam($examSlug)
     {
         $exam = $this->examRepository->findOneBySlug($examSlug);
 
         $questions = $this->questionRepository->findByExam($exam->getId()); 
-        if (is_null($questions)) {
+        if (null === $questions) {
             $questions = []; 
         }
         $transfers = [];
@@ -39,13 +40,13 @@ class Question
     }
 
     /**
-    * @method findOneById
+    * @method Question findOneById
     */ 
     public function get($questionId) 
     {
         $question = $this->questionRepository->findOneById($questionId);
 
-        if (is_null($question)) {
+        if (null === $question) {
             return null;
         }
         $transfer = $this->questionRepository->asTransfer($question);

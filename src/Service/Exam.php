@@ -15,7 +15,7 @@ class Exam
    }
 
    /**
-    * @method \CloudExam\Exam\Entity\Exam findBySlug
+    * @method \CloudExam\Exam\Entity\Exam findOneBySlug
     */ 
    public function get($slug)
    {
