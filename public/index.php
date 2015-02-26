@@ -50,8 +50,9 @@ $app->get('/question/{questionId}', function($questionId) use($app) {
     $choiceRepo = $app['db.em']->getRepository('\CloudExam\Exam\Entity\Choice');
     $choiceService = new Choice($choiceRepo);
     $questionRepo = $app['db.em']->getRepository('\CloudExam\Exam\Entity\Question');
+    $examRepo = $app['db.em']->getRepository('\CloudExam\Exam\Entity\Exam');
 
-    $service = new Question($choiceService, $questionRepo); 
+    $service = new Question($choiceService, $questionRepo, $examRepo); 
     
     return json_encode($service->get($questionId));
 });

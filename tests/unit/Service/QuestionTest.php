@@ -61,10 +61,20 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
             }  
             return $transfer1;
         }));
-        $this->repositoryMock->expects($this->once())->method('__call')->with('findByExam', [$examId])->will($this->returnValue([
-           $q1,
-           $q2
-        ])); 
+        $this->repositoryMock->expects($this->any())->method('__call')->will($this->returnCallback(function($name, $args) use ($q1, $q2){
+            if ($name == 'findByExam') {
+                return [
+                   $q1,
+                   $q2
+                ];
+            }
+
+            if ($name == 'findOneById') {
+                return ($args[0] == $q1->getId()) ? $q1 : $q2 ;
+            } 
+
+        })); 
+        $this->choiceServiceMock->expects($this->exactly(2))->method('getChoicesByQuestion')->will($this->returnValue([])); 
 
         $questions = $this->service->getByExam($examSlug);
 

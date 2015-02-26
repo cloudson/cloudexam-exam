@@ -32,7 +32,7 @@ class Question
         }
         $transfers = [];
         foreach ($questions as $question) {
-            $transfers[] = $this->questionRepository->asTransfer($question);
+            $transfers[] = $this->get($question->getId());
         }
 
         return $transfers;
