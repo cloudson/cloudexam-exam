@@ -4,6 +4,7 @@ namespace CloudExam\Exam\Service;
 
 use CloudExam\Exam\Entity\Question as QuestionEntity;
 use CloudExam\Exam\Transfer\Question as QuestionTransfer;
+use CloudExam\Exam\Entity\Exam as ExamEntity;
 use CloudExam\Exam\Transfer\Choice as ChoiceTransfer;
 
 class QuestionTest extends \PHPUnit_Framework_TestCase
@@ -11,12 +12,14 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
     protected $service; 
     protected $repositoryMock; 
     protected $choiceServiceMock; 
+    protected $examRepositoryMock;
 
     public function setUp()
     {
         $this->repositoryMock = $this->getMockBuilder('CloudExam\Exam\Repository\Question')->disableOriginalConstructor()->getMock();
+        $this->examRepositoryMock = $this->getMockBuilder('CloudExam\Exam\Repository\Exam')->disableOriginalConstructor()->getMock();
         $this->choiceServiceMock = $this->getMockBuilder('CloudExam\Exam\Service\Choice')->disableOriginalConstructor()->getMock(); 
-        $this->service = new Question($this->choiceServiceMock, $this->repositoryMock); 
+        $this->service = new Question($this->choiceServiceMock, $this->repositoryMock, $this->examRepositoryMock); 
     }
 
     /**
@@ -24,7 +27,13 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
      */ 
     public function shouldReturnsQuestionsByExam()
     {
+        $examSlug = 'zce';
         $examId = 66;  
+        $exam = new ExamEntity;
+        $exam->setId($examId);
+        $exam->setSlug($examSlug);
+
+        
         $transfer1 = new QuestionTransfer; 
         $transfer1->setTitle('Question one');
 
@@ -43,6 +52,8 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
         $q2->setId(2);
         $q2->setTitle('Question two');
 
+        $this->examRepositoryMock->method('__call')->with('findOneBySlug', [$examSlug])->will($this->returnValue($exam));
+
         $this->repositoryMock->method('asTransfer')
             ->will($this->returnCallback(function($entity) use ($q2, $transfer1, $transfer2) {
             if ($entity === $q2) {
@@ -55,7 +66,7 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
            $q2
         ])); 
 
-        $questions = $this->service->getByExam($examId);
+        $questions = $this->service->getByExam($examSlug);
 
         $this->assertEquals($expected, $questions);
     }
@@ -65,9 +76,15 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldReturnAnEmptyArrayWhenQuestionsIsNotFound()
     {
-        $examId = 666;
+        $examSlug = 'lp1';
+        $examId = 66;  
+        $exam = new ExamEntity;
+        $exam->setId($examId);
+        $exam->setSlug($examSlug);
+
+        $this->examRepositoryMock->method('__call')->with('findOneBySlug', [$examSlug])->will($this->returnValue($exam));
         $this->repositoryMock->expects($this->once())->method('__call')->with('findByExam', [$examId] )->will($this->returnValue(null)); 
-        $questions = $this->service->getByExam($examId);
+        $questions = $this->service->getByExam($examSlug);
 
         $this->assertInternalType('array', $questions);
     }
@@ -134,7 +151,7 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
      */ 
     public function shouldReturnsNullIfQuestionIsNotFound()
     {
-        $questionId = 66; 
+        
         $this->repositoryMock->expects($this->once())->method('__call')->with('findOneById', [$questionId])->will($this->returnValue(null)); 
 
         $this->assertNull($this->service->get($questionId));

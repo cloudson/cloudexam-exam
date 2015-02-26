@@ -38,8 +38,9 @@ $app->get("/exam/{slug}/questions", function($slug) use ($app){
 	$choiceRepo = $app['db.em']->getRepository('\CloudExam\Exam\Entity\Choice');
     $choiceService = new Choice($choiceRepo);
     $questionRepo = $app['db.em']->getRepository('\CloudExam\Exam\Entity\Question');
+    $examRepo = $app['db.em']->getRepository('\CloudExam\Exam\Entity\Exam');
 
-    $service = new Question($choiceService, $questionRepo); 
+    $service = new Question($choiceService, $questionRepo, $examRepo); 
     $questions = $service->getByExam($slug);
 
     return json_encode($questions);
