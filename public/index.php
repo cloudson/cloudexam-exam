@@ -9,6 +9,7 @@ use CloudExam\Exam\Service\Choice;
 use CloudExam\Exam\Service\Attempt;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 $app = new Silex\Application;
 $app['debug'] = !ENV_PROD; 
@@ -26,7 +27,7 @@ $app->get('/exam', function() use ($app) {
 		'OrderBy' => [ 'createdAt' => 'desc' ] 
 	]);
 
-	return json_encode($exams);
+	return new JsonResponse($exams);
 });
 
 $app->get('/exam/{slug}', function($slug) use ($app) {
@@ -34,7 +35,7 @@ $app->get('/exam/{slug}', function($slug) use ($app) {
 	$service = new Exam($examRepo);
 	$exam = $service->get($slug);
 
-	return json_encode($exam);
+	return new JsonResponse($exam);
 });
 
 $app->get("/exam/{slug}/questions", function($slug) use ($app){
@@ -46,7 +47,7 @@ $app->get("/exam/{slug}/questions", function($slug) use ($app){
     $service = new Question($choiceService, $questionRepo, $examRepo); 
     $questions = $service->getByExam($slug);
 
-    return json_encode($questions);
+    return new JsonResponse($questions);
 });
 
 $app->get('/question/{questionId}', function($questionId) use($app) {
@@ -57,7 +58,7 @@ $app->get('/question/{questionId}', function($questionId) use($app) {
 
     $service = new Question($choiceService, $questionRepo, $examRepo); 
     
-    return json_encode($service->get($questionId));
+    return new JsonResponse($service->get($questionId));
 });
 
 $app->post('/success', function(Request $request) use ($app){
@@ -80,10 +81,6 @@ $app->post('/success', function(Request $request) use ($app){
 	}
 
 	return new Response('', $status);
-});
-
-$app->after(function($request, $response) {
-	// $response->headers->set('Content-Type', 'Application/json');
 });
 
 $app->run();
