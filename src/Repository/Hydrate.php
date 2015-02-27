@@ -8,7 +8,7 @@ trait Hydrate
 	{
 		$entityName = get_class($entity);
 		$transferName = str_replace("Entity", "Transfer", $entityName);
-
+		$transferName = str_replace('DoctrineProxies\__CG__', '', $transferName);
 		
 		$transfer = new $transferName;
 		$reflect = new \ReflectionClass($transfer);
