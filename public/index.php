@@ -6,6 +6,9 @@ require_once __DIR__."/../config/settings.php";
 use CloudExam\Exam\Service\Exam;
 use CloudExam\Exam\Service\Question;
 use CloudExam\Exam\Service\Choice;
+use CloudExam\Exam\Service\Attempt;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 $app = new Silex\Application;
 $app['debug'] = !ENV_PROD; 
@@ -57,8 +60,30 @@ $app->get('/question/{questionId}', function($questionId) use($app) {
     return json_encode($service->get($questionId));
 });
 
-$app->after(function($request, $response){
-	$response->headers->set('Content-Type', 'Application/json');
+$app->post('/success', function(Request $request) use ($app){
+	$transfer = new CloudExam\Exam\Transfer\Attempt;
+	$fields = array_keys((array) $transfer);
+	
+	foreach ($fields as $field) {
+		$setter = "set" . ucfirst($field);
+		$transfer->$setter($request->get($field));
+	}
+
+	$attemptRepo = $app['db.em']->getRepository('\CloudExam\Exam\Entity\Attempt');
+	$questionRepo = $app['db.em']->getRepository('\CloudExam\Exam\Entity\Question');
+	$choiceRepo = $app['db.em']->getRepository('\CloudExam\Exam\Entity\Choice');
+	$service = new  Attempt($attemptRepo, $questionRepo, $choiceRepo);
+
+	$status = Response::HTTP_OK;
+	if (!$service->check($transfer)) {
+		$status = Response::HTTP_NOT_FOUND;
+	}
+
+	return new Response('', $status);
+});
+
+$app->after(function($request, $response) {
+	// $response->headers->set('Content-Type', 'Application/json');
 });
 
 $app->run();

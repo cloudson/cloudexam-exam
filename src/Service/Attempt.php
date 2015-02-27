@@ -37,7 +37,6 @@ class Attempt
 		    $question = $this->questionRepo->findOneBySlug($transfer->getQuestionSlug());
 
             $correct = $question->getChoice();
-
             return $correct->getTitle() == $choice->getTitle();  
         }
 

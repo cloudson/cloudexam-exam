@@ -5,6 +5,7 @@ namespace CloudExam\Exam\Transfer;
 class Question
 {
     public $title; 
+    public $slug;
     public $choices = array();
 
     public function setTitle($title)
@@ -25,5 +26,15 @@ class Question
     public function getChoices()
     {
         return $this->choices;
+    }
+
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
+    public function getSlug()
+    {
+         return $this->slug;
     }
 }

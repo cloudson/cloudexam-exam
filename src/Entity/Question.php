@@ -45,6 +45,10 @@ class Question
     */ 
     protected $exam;
 
+    /**
+    * @ORM\OneToOne(targetEntity="Choice")
+    * @ORM\JoinColumn(name="choice_id", referencedColumnName="id")
+    */ 
     protected $choice; 
 
     public function setId($id)
