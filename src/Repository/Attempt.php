@@ -11,6 +11,8 @@ class Attempt extends EntityRepository
 	
 	public function doTry(AttemptEntity $entity)
 	{
-		
+		$em = $this->getEntityManager();
+		$em->persist($entity);
+		$em->flush();
 	}
 }

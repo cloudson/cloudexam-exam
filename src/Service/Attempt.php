@@ -7,6 +7,8 @@ use CloudExam\Exam\Repository\Attempt as AttemptRepository;
 use CloudExam\Exam\Repository\Question as QuestionRepository;
 use CloudExam\Exam\Repository\Choice as ChoiceRepository;
 use CloudExam\Exam\Entity\Attempt as AttemptEntity;
+use CloudExam\Exam\Entity\Question as QuestionEntity;
+use CloudExam\Exam\Exception\EntityNotFoundException;
 
 class Attempt 
 {
@@ -25,7 +27,7 @@ class Attempt
 	public function create(AttemptTransfer $transfer)
 	{	
 		$entity = $this->asEntity($transfer);
-		
+			
 		return $this->repo->doTry($entity);
     }
 
@@ -48,13 +50,22 @@ class Attempt
 		$entity = new AttemptEntity;
 		$question = $this->questionRepo->findOneBySlug($transfer->getQuestionSlug());
 		if (is_null($question)) {
-			return $entity;
+			throw new EntityNotFoundException(QuestionEntity::class, [
+				'slug' => $transfer->getQuestionSlug()
+			]);
 		}
 
 		$choice = $this->choiceRepo->findOneBy([
 			'title' => $transfer->getChoiceTitle(),
 			'questionId' => $question->getId()
 		]);
+
+		if (null === $choice) {
+			throw new EntityNotFoundException(ChoiceEntity::class, [
+				'title' => $transfer->getChoiceTitle(),
+				'questionId' => $question->getId()	
+			]);
+		}
 		
 		$entity->setChoice($choice);
 

@@ -43,12 +43,16 @@ class AttemptTest extends \PHPUnit_Framework_TestCase
 		$transfer = new AttemptTransfer;
 		$transfer->setChoiceTitle('PHP');
 
+		$this->questionRepo->method('__call')->will($this->returnValue(new QuestionEntity));
+		$this->choiceRepo->method('findOneBy')->will($this->returnValue(new ChoiceEntity));
+
 		$this->attemptRepo->expects($this->once())->method('doTry');
 		$this->service->create($transfer);
 	}
 
 	/**
 	* @test
+	* @expectedException \CloudExam\Exam\Exception\EntityNotFoundException
 	*/ 
 	public function shoulLoadQuestion()
 	{
@@ -70,6 +74,7 @@ class AttemptTest extends \PHPUnit_Framework_TestCase
 
 	/**
 	* @test
+	* @expectedException \CloudExam\Exam\Exception\EntityNotFoundException
 	*/ 
 	public function shouldLoadChoice()
 	{
@@ -152,5 +157,48 @@ class AttemptTest extends \PHPUnit_Framework_TestCase
 		)->will($this->returnValue($correctChoice));
 
         $this->assertTrue($this->service->check($transfer)); 
+    }
+
+    /**
+    * @test
+    * @expectedException \CloudExam\Exam\Exception\EntityNotFoundException
+    */ 
+    public function shouldReturnExceptionWhenCreatingAttemptWithQuestionNotFound()
+    {
+    	$transfer = new AttemptTransfer;
+		$transfer->setQuestionSlug('which-your-favorite-language');
+		$transfer->setChoiceTitle('PHP');
+
+		$this->questionRepo->method('__call')->with(
+			'findOneBySlug',
+			[$transfer->getQuestionSlug()]
+		)->will($this->returnValue(null));
+
+        $this->service->create($transfer); 
+    }
+
+    /**
+    * @test
+    * @expectedException \CloudExam\Exam\Exception\EntityNotFoundException
+    */ 
+    public function shouldReturnExceptionWhenCheckingAttemptWithChoiceNotFound()
+    {
+    	$transfer = new AttemptTransfer;
+		$transfer->setQuestionSlug('which-your-favorite-language');
+		$transfer->setChoiceTitle('PHP');
+
+		$question = new QuestionEntity;
+        $question->setSlug('which-your-favorite-language');
+        $question->setChoice($correctChoice);
+
+		$this->questionRepo->method('__call')->with(
+			'findOneBySlug',
+			[$transfer->getQuestionSlug()]
+		)->will($this->returnValue($question));
+
+
+		$this->choiceRepo->method('findOneBy')->will($this->returnValue(null));
+
+        $this->service->create($transfer); 
     }
 }
