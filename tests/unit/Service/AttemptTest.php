@@ -174,7 +174,7 @@ class AttemptTest extends \PHPUnit_Framework_TestCase
 
 		$question = new QuestionEntity;
         $question->setSlug('which-your-favorite-language');
-        $question->setChoice($correctChoice);
+        
 
 		$this->questionRepo->method('findOneBySlug')->will($this->returnValue($question));
 
