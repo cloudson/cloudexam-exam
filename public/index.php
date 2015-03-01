@@ -16,7 +16,6 @@ $app['debug'] = !ENV_PROD;
 require_once __DIR__."/../config/database.php";
 
 $app->get("/", function(){
-	phpinfo();
     return "Application is alive!";
 });
 
@@ -64,7 +63,6 @@ $app->get('/question/{questionId}', function($questionId) use($app) {
 $app->post('/success', function(Request $request) use ($app){
 	$transfer = new CloudExam\Exam\Transfer\Attempt;
 	$fields = array_keys((array) $transfer);
-	
 	foreach ($fields as $field) {
 		$setter = "set" . ucfirst($field);
 		$transfer->$setter($request->get($field));
@@ -76,6 +74,7 @@ $app->post('/success', function(Request $request) use ($app){
 	$service = new  Attempt($attemptRepo, $questionRepo, $choiceRepo);
 
 	$status = Response::HTTP_OK;
+	$service->create($transfer);
 	if (!$service->check($transfer)) {
 		$status = Response::HTTP_NOT_FOUND;
 	}
