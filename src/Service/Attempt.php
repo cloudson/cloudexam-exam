@@ -42,7 +42,12 @@ class Attempt
 		    ]);
 
             $correct = $question->getChoice();
-            return ($correct && $correct->getTitle() == $choice->getTitle());  
+            if (null === $correct) {
+            	throw new EntityNotFoundException(ChoiceEntity::class, [
+            		'questionSlug' => $transfer->getQuestionSlug()
+            	]);
+            }
+            return ($correct->getTitle() == $choice->getTitle());  
         }
 
         return false;

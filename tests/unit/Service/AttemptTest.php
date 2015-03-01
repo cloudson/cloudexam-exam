@@ -176,11 +176,32 @@ class AttemptTest extends \PHPUnit_Framework_TestCase
         $question->setSlug('which-your-favorite-language');
         
 
-		$this->questionRepo->method('findOneBySlug')->will($this->returnValue($question));
-
-
+		$this->questionRepo->method('findOneBy')->will($this->returnValue($question));
 		$this->choiceRepo->method('findOneBy')->will($this->returnValue(null));
 
         $this->service->create($transfer); 
+    }
+
+    /**
+    * @test
+    * @expectedException \CloudExam\Exam\Exception\EntityNotFoundException
+    */ 
+    public function shouldThrowExceptionWhenQuestionHasNotCorrectChoice()
+    {
+    	$transfer = new AttemptTransfer;
+		$transfer->setQuestionSlug('which-your-favorite-language');
+		$transfer->setChoiceTitle('PHP');
+
+		$question = new QuestionEntity;
+        $question->setSlug('which-your-favorite-language');
+        $question->setChoice(null);
+
+        $choice = new ChoiceEntity; 
+        $choice->setTitle('Go'); 
+
+		$this->questionRepo->method('findOneBy')->will($this->returnValue($question));
+		$this->choiceRepo->method('findOneBy')->will($this->returnValue($choice));
+
+    	$this->service->check($transfer);
     }
 }
