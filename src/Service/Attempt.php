@@ -8,6 +8,7 @@ use CloudExam\Exam\Repository\Question as QuestionRepository;
 use CloudExam\Exam\Repository\Choice as ChoiceRepository;
 use CloudExam\Exam\Entity\Attempt as AttemptEntity;
 use CloudExam\Exam\Entity\Question as QuestionEntity;
+use CloudExam\Exam\Entity\Choice as ChoiceEntity;
 use CloudExam\Exam\Exception\EntityNotFoundException;
 
 class Attempt 
@@ -36,10 +37,12 @@ class Attempt
         $entity = $this->asEntity($transfer);
         if ($entity) {
             $choice = $entity->getChoice(); 
-		    $question = $this->questionRepo->findOneBySlug($transfer->getQuestionSlug());
+		    $question = $this->getEntityBy(QuestionEntity::class, [
+		    	'slug' => $transfer->getQuestionSlug()
+		    ]);
 
             $correct = $question->getChoice();
-            return $correct->getTitle() == $choice->getTitle();  
+            return ($correct && $correct->getTitle() == $choice->getTitle());  
         }
 
         return false;
@@ -48,26 +51,31 @@ class Attempt
 	private function asEntity(AttemptTransfer $transfer)
 	{
 		$entity = new AttemptEntity;
-		$question = $this->questionRepo->findOneBySlug($transfer->getQuestionSlug());
-		if (is_null($question)) {
-			throw new EntityNotFoundException(QuestionEntity::class, [
-				'slug' => $transfer->getQuestionSlug()
-			]);
-		}
-
-		$choice = $this->choiceRepo->findOneBy([
-			'title' => $transfer->getChoiceTitle(),
-			'questionId' => $question->getId()
+		$question = $this->getEntityBy(QuestionEntity::class, [
+			'slug' => $transfer->getQuestionSlug()
 		]);
 
-		if (null === $choice) {
-			throw new EntityNotFoundException(ChoiceEntity::class, [
-				'title' => $transfer->getChoiceTitle(),
-				'questionId' => $question->getId()	
-			]);
-		}
+		$choice = $this->getEntityBy(ChoiceEntity::class, [
+			'title' => $transfer->getChoiceTitle(),
+			'questionId' => $question->getId()	
+		]);
 		
 		$entity->setChoice($choice);
+
+		return $entity;
+	}
+
+	private function getEntityBy($entityName, $byValues) 
+	{
+		$parts = explode('\\', $entityName);
+		$lastName = $parts[count($parts) - 1];
+		$repoName = strtolower($lastName) . 'Repo';
+		$repo = $this->$repoName;
+		
+		$entity = $repo->findOneBy($byValues);
+		if (null === $entity) {
+			throw new EntityNotFoundException($entityName, $byValues);
+		}
 
 		return $entity;
 	}

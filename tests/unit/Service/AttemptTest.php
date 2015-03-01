@@ -43,7 +43,7 @@ class AttemptTest extends \PHPUnit_Framework_TestCase
 		$transfer = new AttemptTransfer;
 		$transfer->setChoiceTitle('PHP');
 
-		$this->questionRepo->method('__call')->will($this->returnValue(new QuestionEntity));
+		$this->questionRepo->method('findOneBy')->will($this->returnValue(new QuestionEntity));
 		$this->choiceRepo->method('findOneBy')->will($this->returnValue(new ChoiceEntity));
 
 		$this->attemptRepo->expects($this->once())->method('doTry');
@@ -64,10 +64,7 @@ class AttemptTest extends \PHPUnit_Framework_TestCase
 		$question = new QuestionEntity;
 		$question->setSlug('which-your-favorite-language');
 
-		$this->questionRepo->expects($this->once())->method('__call')->with(
-			'findOneBySlug',
-			[$transfer->getQuestionSlug()]
-		)->will($this->returnValue($question));
+		$this->questionRepo->expects($this->once())->method('findOneBy')->will($this->returnValue($question));
 
 		$this->service->create($transfer);
 	}
@@ -85,10 +82,7 @@ class AttemptTest extends \PHPUnit_Framework_TestCase
 		$question = new QuestionEntity;
 		$question->setSlug('which-your-favorite-language');
 
-		$this->questionRepo->method('__call')->with(
-			'findOneBySlug',
-			[$transfer->getQuestionSlug()]
-		)->will($this->returnValue($question));
+		$this->questionRepo->method('findOneBy')->will($this->returnValue($question));
 
 		$this->choiceRepo->expects($this->once())->method('findOneBy')->with([
 				'questionId' => $question->getId(), 
@@ -115,10 +109,7 @@ class AttemptTest extends \PHPUnit_Framework_TestCase
         $question->setSlug('which-your-favorite-language');
         $question->setChoice($correctChoice);
 
-		$this->questionRepo->method('__call')->with(
-			'findOneBySlug',
-			[$transfer->getQuestionSlug()]
-		)->will($this->returnValue($question));
+		$this->questionRepo->method('findOneBy')->will($this->returnValue($question));
 
 		$this->choiceRepo->method('findOneBy')->with([
 				'questionId' => $question->getId(), 
@@ -145,10 +136,7 @@ class AttemptTest extends \PHPUnit_Framework_TestCase
         $question->setSlug('which-your-favorite-language');
         $question->setChoice($correctChoice);
 
-		$this->questionRepo->method('__call')->with(
-			'findOneBySlug',
-			[$transfer->getQuestionSlug()]
-		)->will($this->returnValue($question));
+		$this->questionRepo->method('findOneBy')->will($this->returnValue($question));
 
 		$this->choiceRepo->method('findOneBy')->with([
 				'questionId' => $question->getId(), 
@@ -169,10 +157,7 @@ class AttemptTest extends \PHPUnit_Framework_TestCase
 		$transfer->setQuestionSlug('which-your-favorite-language');
 		$transfer->setChoiceTitle('PHP');
 
-		$this->questionRepo->method('__call')->with(
-			'findOneBySlug',
-			[$transfer->getQuestionSlug()]
-		)->will($this->returnValue(null));
+		$this->questionRepo->method('findOne')->will($this->returnValue(null));
 
         $this->service->create($transfer); 
     }
@@ -191,10 +176,7 @@ class AttemptTest extends \PHPUnit_Framework_TestCase
         $question->setSlug('which-your-favorite-language');
         $question->setChoice($correctChoice);
 
-		$this->questionRepo->method('__call')->with(
-			'findOneBySlug',
-			[$transfer->getQuestionSlug()]
-		)->will($this->returnValue($question));
+		$this->questionRepo->method('findOneBySlug')->will($this->returnValue($question));
 
 
 		$this->choiceRepo->method('findOneBy')->will($this->returnValue(null));
